@@ -8,7 +8,7 @@ function App() {
   return (
     <div className="App">
       <Header islogin={isLoggedIn} />
-      <p>Gurtej Changes something new change</p>
+      <p>Gurtej Changes something</p>
     </div>
   );
 }
