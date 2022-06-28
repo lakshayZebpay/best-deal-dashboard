@@ -5,21 +5,23 @@ import "./ExchangeData.css";
 const ExchangeData = (props) => {
   return (
     <div className="height">
-      {props.allExchangeData.map((exchange) => {
-        return (
-          <Accordion defaultActiveKey="0">
-            <Accordion.Item eventKey="0">
-              <Accordion.Header className="exchange-heading">
-                <h4>{exchange.name}</h4>
-                <h4>{exchange.price}</h4>
+      <Accordion flush>
+        {props.allExchangeData.map((exchange, i) => {
+          return (
+            <Accordion.Item eventKey={`${i}`}>
+              <Accordion.Header>
+                <div className="exchange-heading">
+                  <h5>{exchange.name}</h5>
+                  <h5>{exchange.price}</h5>
+                </div>
               </Accordion.Header>
               <Accordion.Body>
                 <Card.Title>{props.cryptoId}</Card.Title>
               </Accordion.Body>
             </Accordion.Item>
-          </Accordion>
-        );
-      })}
+          );
+        })}
+      </Accordion>
     </div>
   );
 };
