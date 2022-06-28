@@ -13,14 +13,18 @@ const CryptoBuying = (props) => {
   
     return ( 
     
-      <>  
+      <>   
+
+
+
+
           <p>Convert </p> 
           <div>
           <input type="number" />
           <select>
             <option value="USD">USD</option>
           </select>
-          </div>
+          </div> 
  
         <Button variant="primary" onClick={handleShow}>
             Buy
@@ -46,3 +50,8 @@ const CryptoBuying = (props) => {
     ); 
 };
 export default CryptoBuying 
+
+
+
+
+
