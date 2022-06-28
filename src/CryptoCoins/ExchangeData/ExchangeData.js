@@ -1,6 +1,7 @@
 import Card from "react-bootstrap/Card";
 import Accordion from "react-bootstrap/Accordion";
 import "./ExchangeData.css";
+import CryptoBuying from "../CryptoBuying/CryptoBuying";
 
 const ExchangeData = (props) => {
   return (
@@ -16,7 +17,8 @@ const ExchangeData = (props) => {
                 </div>
               </Accordion.Header>
               <Accordion.Body>
-                <Card.Title>{props.cryptoId}</Card.Title>
+                 <CryptoBuying/>
+                {/* <Card.Title>{props.cryptoId}</Card.Title> */}
               </Accordion.Body>
             </Accordion.Item>
           );
@@ -28,15 +30,4 @@ const ExchangeData = (props) => {
 
 export default ExchangeData;
 
-{
-  /* <Card
-  className="text-left"
-  key={exchange.id}
-  border="primary"
-  style={{ margin: "20px" }}
->
-  <Card.Body>
-    <Card.Text></Card.Text>
-  </Card.Body>
-</Card>; */
-}
+
