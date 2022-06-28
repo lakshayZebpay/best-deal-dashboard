@@ -14,9 +14,14 @@ const CryptoBuying = (props) => {
     return ( 
     
       <>  
-          <p>
-            Convert
-          </p>
+          <p>Convert </p> 
+          <div>
+          <input type="number" />
+          <select>
+            <option value="USD">USD</option>
+          </select>
+          </div>
+ 
         <Button variant="primary" onClick={handleShow}>
             Buy
         </Button>
