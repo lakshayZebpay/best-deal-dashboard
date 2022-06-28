@@ -14,6 +14,9 @@ const CryptoBuying = (props) => {
     return ( 
     
       <>  
+          <p>
+            Convert
+          </p>
         <Button variant="primary" onClick={handleShow}>
             Buy
         </Button>
@@ -24,12 +27,13 @@ const CryptoBuying = (props) => {
           </Modal.Header>
           <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
           <Modal.Footer>
+          <Button variant="primary" onClick={handleClose}>
+          Confirm  
+            </Button>
             <Button variant="secondary" onClick={handleClose}>
-              Close
+            Cancel
             </Button>
-            <Button variant="primary" onClick={handleClose}>
-              Save Changes
-            </Button>
+           
           </Modal.Footer>
         </Modal>
       </>
