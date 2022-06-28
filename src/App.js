@@ -8,7 +8,7 @@ function App() {
   return (
     <div className="App">
       <Header islogin={isLoggedIn} />
-      <p>Gurtej Changes something</p>
+      <p> random Change </p>
     </div>
   );
 }
