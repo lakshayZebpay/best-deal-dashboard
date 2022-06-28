@@ -3,6 +3,8 @@ import "./App.css";
 import Header from "./Header/Header";
 import { useState } from "react";
 import CryptoCoins from "./CryptoCoins/CryptoCoins";
+import { Login } from "./login/login";
+import { Signup } from "./signup/signup";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(true);
@@ -14,7 +16,8 @@ function App() {
         <Routes>
           <Route exact path="/" element={<CryptoCoins />} />
           <Route path="/exchange" element={<CryptoCoins />} />
-          <Route path="/login" element={<p>aa</p>} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
         </Routes>
       </Router>
     </div>
