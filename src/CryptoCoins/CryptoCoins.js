@@ -58,6 +58,8 @@ const CryptoCoins = () => {
         id="left-tabs-example"
         activeKey={activeKey}
         onSelect={(selectedKey) => setActiveKey(selectedKey)}
+        mountOnEnter
+        unmountOnExit
       >
         <Row>
           <Col sm={3}>
