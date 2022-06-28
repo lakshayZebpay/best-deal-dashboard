@@ -4,6 +4,7 @@ import Offcanvas from "react-bootstrap/Offcanvas";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import Transactions from "../Transactions/Transactions";
+import getData from "../../Calls/getData";
 
 const History = () => {
   const [show, setShow] = useState(false);
@@ -16,6 +17,7 @@ const History = () => {
       coinAmount: "0.00001BTC",
       time: "2 Days Ago",
       cost: "300",
+      progress: "partiallyFilled",
     },
     {
       id: 2,
@@ -24,6 +26,7 @@ const History = () => {
       coinAmount: "0.00001BTC",
       time: "2 Days Ago",
       cost: "300",
+      progress: "Completed",
     },
     {
       id: 3,
@@ -40,6 +43,7 @@ const History = () => {
       coinAmount: "0.00001BTC",
       time: "2 Days Ago",
       cost: "300",
+      progress: "Rejected",
     },
     {
       id: 5,
@@ -48,6 +52,7 @@ const History = () => {
       coinAmount: "0.00001BTC",
       time: "2 Days Ago",
       cost: "300",
+      progress: "Pending",
     },
     {
       id: 6,
@@ -56,6 +61,7 @@ const History = () => {
       coinAmount: "0.00001BTC",
       time: "2 Days Ago",
       cost: "300",
+      progress: "Rejected",
     },
     {
       id: 7,
@@ -72,6 +78,7 @@ const History = () => {
       coinAmount: "0.00001BTC",
       time: "2 Days Ago",
       cost: "300",
+      progress: "Pending",
     },
     {
       id: 9,
@@ -80,6 +87,7 @@ const History = () => {
       coinAmount: "0.00001BTC",
       time: "2 Days Ago",
       cost: "300",
+      progress: "Completed",
     },
   ]);
 
@@ -92,7 +100,11 @@ const History = () => {
   };
 
   //this useEffect is for calling backend for our history data
-  useEffect(() => {}, []);
+  useEffect(() => {
+    // const url = "http";
+    // const data = getData(url);
+    // setCryptoTransaction(data);
+  }, []);
 
   //just a filter
   useEffect(() => {}, [title]);
