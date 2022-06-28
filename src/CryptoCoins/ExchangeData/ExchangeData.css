@@ -11,6 +11,7 @@
 .exchange-heading {
   display: inline-flex;
   justify-content: space-between;
+  width: 90%;
 }
 
 h4 {
