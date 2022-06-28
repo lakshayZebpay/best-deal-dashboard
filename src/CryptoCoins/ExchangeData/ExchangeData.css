@@ -1,0 +1,19 @@
+.height {
+  height: 20vh;
+}
+.exchangeCard {
+  cursor: pointer;
+}
+.exchangeCard:hover {
+  background-color: rgba(0, 0, 0, 1);
+}
+
+.exchange-heading {
+  display: inline-flex;
+  justify-content: space-between;
+  width: 90%;
+}
+
+h4 {
+  margin-bottom: 0;
+}
