@@ -23,7 +23,7 @@ const Header = (props) => {
         >
           Exchange
         </Button>
-        {!isLoggedIn ? (
+        {isLoggedIn ? (
           <Button as="a" variant="primary" onClick={() => navigate("/login")}>
             Login/SignUp
           </Button>
