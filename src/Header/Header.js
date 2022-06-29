@@ -1,14 +1,20 @@
-// import react, { memo, useState } from "react";
+import { useContext } from "react";
 import { Button, Stack } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import History from "../CryptoCoins/History/History";
+import { Context } from "../App";
 import "./Header.css";
 
 const Header = (props) => {
-  const isLoggedIn = props.islogin;
+  const getContext = useContext(Context);
+  const { isLoggedIn, setIsLoggedIn } = getContext[0];
   const isDarkMode = props.isDarkMode;
   const navigate = useNavigate();
 
+  const handleLogout = () => {
+    navigate("/login");
+    setIsLoggedIn(false);
+  };
   return (
     <nav
       className={`navbar navbar-dark 
@@ -23,12 +29,17 @@ const Header = (props) => {
         >
           Exchange
         </Button>
-        {isLoggedIn ? (
+        {!isLoggedIn ? (
           <Button as="a" variant="primary" onClick={() => navigate("/login")}>
             Login/SignUp
           </Button>
         ) : (
           <History />
+        )}
+        {isLoggedIn && (
+          <Button as="a" variant="primary" onClick={handleLogout}>
+            Logout
+          </Button>
         )}
       </Stack>
     </nav>

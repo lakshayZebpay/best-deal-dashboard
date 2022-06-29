@@ -7,7 +7,7 @@ const Loader = (props) => {
     .map((el, i) => <div className={classType}></div>);
 
   return (
-    <div>
+    <div className="loader">
       <div class="center">{wave}</div>
       <h4>{props.isError && "Error Occured"}</h4>
     </div>
