@@ -1,3 +1,8 @@
 .crypto-container {
   width: 80%;
 }
+
+img {
+  margin-bottom: 4px;
+  margin-right: 4px;
+}

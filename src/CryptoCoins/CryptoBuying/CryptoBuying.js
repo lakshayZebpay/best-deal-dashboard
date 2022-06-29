@@ -1,75 +1,92 @@
-
-import ReactDOM from 'react-dom';
+// import conversionLogo from "../../../public/";
 import "./CryptoBuying.css";
-import React, { useState } from 'react';
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
-const CryptoBuying = (props) => {   
-    const coinsValue = {
-        btc: 21,
-        ethereum: 12,
-        bat: 15,
-        ripple: 20,
-      }
-    const [show, setShow] = useState(false); 
-    const [btcValue, setBtcValue] = useState(""); 
-    const [dollarValue, setDollarValue] = useState(""); 
-    const [coinValue, setCoinValue] = useState(21); 
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
-    const handleBtcToDollar = (e) => {
-        setBtcValue(e.target.value);
-        setDollarValue(e.target.value * coinValue);
-      }
-      
-      const handleDollarToBtc = (e) => {
-        setBtcValue(e.target.value / coinValue);
-        setDollarValue(e.target.value);
-      } 
-    return ( 
-    
-      <>   
-       
-          <div> 
-<input value={btcValue}   onChange={handleBtcToDollar} type="number" />
-<select> 
+import React, { useState, useRef } from "react";
+import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
+import Form from "react-bootstrap/Form";
+import InputGroup from "react-bootstrap/InputGroup";
 
-  <option value="USD">BTC</option>
-</select>  
-</div>  
-<div>
-<input value={dollarValue}   onChange={handleDollarToBtc} type="number" />
-<select> 
+const CryptoBuying = (props) => {
+  const coinData = useState(props.data);
 
-<option value="USD">Dollar</option>
+  const [show, setShow] = useState(false);
+  const [cryptoValue, setCryptoValue] = useState("");
+  const [dollarValue, setDollarValue] = useState("");
+  // const [coinValue, setCoinValue] = useState(coinData.pricePerCoin);
+  const [coinValue, setCoinValue] = useState(21);
 
-</select>
-  </div>
-    
-        <Button variant="primary" onClick={handleShow}>
-            Buy
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+  const handleBtcToDollar = (e) => {
+    setCryptoValue(e.target.value);
+    setDollarValue(e.target.value * coinValue);
+  };
+  const handleDollarToBtc = (e) => {
+    setCryptoValue(e.target.value / coinValue);
+    setDollarValue(e.target.value);
+  };
+
+  return (
+    <div className="cryptoBuying">
+      <div className="cryptoExchange">
+        <div className="exchangeCoin">
+          <InputGroup hasValidation onChange={handleBtcToDollar} type="number">
+            <InputGroup.Text id="inputGroup-sizing-default">
+              {props.cryptoId}
+            </InputGroup.Text>
+            <Form.Control
+              placeholder={props.cryptoId}
+              aria-label="Default"
+              aria-describedby="inputGroup-sizing-default"
+              type="number"
+              value={cryptoValue}
+            />
+          </InputGroup>
+        </div>
+        <img
+          src={process.env.PUBLIC_URL + "/pngfind.com-path-png-165424.png"}
+          width="20px"
+          height="20px"
+          alt="conversion-logo"
+        />
+        <div className="exchangeCoin">
+          <InputGroup onChange={handleDollarToBtc}>
+            <Form.Control
+              placeholder="USDT"
+              aria-label="Recipient's username"
+              aria-describedby="basic-addon2"
+              value={dollarValue}
+              type="number"
+            />
+            <InputGroup.Text id="basic-addon2">USDT</InputGroup.Text>
+          </InputGroup>
+        </div>
+      </div>
+      <div>
+        <Button
+          variant="primary"
+          onClick={handleShow}
+          disabled={dollarValue <= 0}
+        >
+          Buy
         </Button>
-  
+
         <Modal show={show} onHide={handleClose}>
           <Modal.Header closeButton>
-            <Modal.Title>Modal heading</Modal.Title>
+            <Modal.Title>Confirm Your Buying</Modal.Title>
           </Modal.Header>
-          <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
+          <Modal.Body>{`${cryptoValue} ${props.cryptoId} for $ ${dollarValue}`}</Modal.Body>
           <Modal.Footer>
-          <Button variant="primary" onClick={handleClose}>
-          Confirm  
+            <Button variant="primary" onClick={handleClose}>
+              Confirm
             </Button>
             <Button variant="secondary" onClick={handleClose}>
-            Cancel
+              Cancel
             </Button>
-           
           </Modal.Footer>
         </Modal>
-      </>
-    
-    ); 
+      </div>
+    </div>
+  );
 };
-export default CryptoBuying 
-
-
-
+export default CryptoBuying;
