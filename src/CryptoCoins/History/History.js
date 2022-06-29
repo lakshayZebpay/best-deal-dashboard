@@ -8,7 +8,7 @@ import getData from "../../Calls/getData";
 
 const History = () => {
   const [show, setShow] = useState(false);
-  const [title, setTitle] = useState("Pending");
+  const [title, setTitle] = useState("All");
   const [cryptoTransactions, setCryptoTransaction] = useState([
     {
       id: 1,
@@ -90,6 +90,8 @@ const History = () => {
       progress: "Completed",
     },
   ]);
+  const [specificCryptoTransactions, setSpecifiedCryptoTransactions] =
+    useState(cryptoTransactions);
 
   const handleClose = () => setShow(false);
   const toggleShow = () => setShow((s) => !s);
@@ -106,8 +108,17 @@ const History = () => {
     // setCryptoTransaction(data);
   }, []);
 
-  //just a filter
-  useEffect(() => {}, [title]);
+  useEffect(() => {
+    let data = [];
+    if (title !== "All")
+      data = cryptoTransactions.filter((transaction) => {
+        return transaction.progress === title;
+      });
+    else data = cryptoTransactions;
+
+    setSpecifiedCryptoTransactions(data);
+  }, [title]);
+
   return (
     <>
       <Button variant="primary" onClick={toggleShow} className="me-2">
@@ -121,13 +132,15 @@ const History = () => {
             onClick={handleClick}
           >
             <Dropdown.Item id="Pending">Pending</Dropdown.Item>
-            <Dropdown.Item id="Complete">Complete</Dropdown.Item>
+            <Dropdown.Item id="Completed">Completed</Dropdown.Item>
+            <Dropdown.Item id="partiallyFilled">Partially Filled</Dropdown.Item>
             <Dropdown.Item id="Rejected">Rejected</Dropdown.Item>
+
             <Dropdown.Item id="All">All</Dropdown.Item>
           </DropdownButton>
         </Offcanvas.Header>
         <Offcanvas.Body>
-          <Transactions cryptoTransactions={cryptoTransactions} />
+          <Transactions cryptoTransactions={specificCryptoTransactions} />
         </Offcanvas.Body>
       </Offcanvas>
     </>
