@@ -8,8 +8,8 @@ import { Context } from "../App";
 export const Login = () => {
   const getContext = useContext(Context);
   const { setIsLoggedIn } = getContext[0];
-
-  const number = useRef(null);
+  const { setUserData } = getContext[1];
+  const username = useRef(null);
   const password = useRef(null);
   const navigate = useNavigate();
   const [isLoading, setLoading] = useState(false);
@@ -19,33 +19,40 @@ export const Login = () => {
 
     const data = {
       password: password.current.value,
-      number: number.current.value,
+      username: username.current.value,
     };
 
-    setLoading(true);
     loginUser(data);
 
     password.current.value = "";
-    number.current.value = "";
-
-    setLoading(false);
-    setIsLoggedIn(true);
-    navigate("/exchange");
+    username.current.value = "";
   };
 
   async function loginUser(content) {
-    const response = await fetch("http://localhost:1337/api/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(content),
-    });
-    const data = await response.json();
-    if (data.user) {
-      alert("Login Successful");
-      window.location.href = "/exchange";
-    } else {
-      alert("Please check Id and password");
+    setLoading(true);
+    try {
+      const response = await fetch("http://localhost:1337/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(content),
+      });
+      const data = await response.json();
+      if (data.user) {
+        setUserData(data.userData);
+        alert("Login Successful");
+        window.localStorage.setItem("token", data.token);
+        window.localStorage.setItem("isLoggedIn", true);
+
+        navigate("/exchange");
+        setIsLoggedIn(true);
+      } else {
+        alert("Please check Id and password");
+      }
+    } catch {
+      alert("Username Doesn't Exist");
     }
+
+    setLoading(false);
   }
 
   return (
@@ -53,12 +60,11 @@ export const Login = () => {
       <div>
         <Form onSubmit={handleSubmit}>
           <Form.Group className="mb-3" controlId="formBasicNumber">
-            <Form.Label>Phone Number</Form.Label>
+            <Form.Label>Username</Form.Label>
             <Form.Control
-              type="tel"
-              pattern="[0-9]{10}"
-              placeholder="Enter mobile number"
-              ref={number}
+              type="text"
+              placeholder="Enter Email/Phone number"
+              ref={username}
               required
             />
           </Form.Group>

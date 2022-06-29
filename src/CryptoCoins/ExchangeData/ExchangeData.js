@@ -25,7 +25,7 @@ const ExchangeData = (props) => {
       <Accordion flush>
         {props.allExchangeData.map((exchange, i) => {
           return (
-            <Accordion.Item eventKey={`${i}`}>
+            <Accordion.Item eventKey={`${i}`} key={exchange.name}>
               <Accordion.Header>
                 <div className="exchange-heading">
                   <h5>

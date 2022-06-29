@@ -13,29 +13,17 @@ export const Signup = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
     const data = {
       name: name.current.value,
       password: password.current.value,
       email: email.current.value,
       number: phone.current.value,
     };
-    setLoading(true);
     registerUser(data);
-
-    name.current.value = "";
-    password.current.value = "";
-    email.current.value = "";
-    phone.current.value = "";
-
-    //data to be sent to backend
-    console.log(data);
-
-    //data sent and successful
-    setLoading(false);
   };
 
   async function registerUser(content) {
+    setLoading(true);
     const response = await fetch("http://localhost:1337/api/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -47,6 +35,7 @@ export const Signup = () => {
       alert("Registration Successful");
       window.location.href = "/login";
     }
+    setLoading(false);
   }
 
   return (

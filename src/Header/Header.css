@@ -1,4 +1,6 @@
-.buttonGroup {
-  width: 90%;
-  justify-content: right;
+.navPosition {
+  margin: 0px 30px;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
 }
