@@ -9,6 +9,10 @@ function App() {
 
   return (
     <div className="App">
+<<<<<<< HEAD
+      <Header islogin={isLoggedIn} />
+      <p> random Change </p>
+=======
       <Router>
         <Header islogin={isLoggedIn} />
         <Routes>
@@ -17,6 +21,7 @@ function App() {
           <Route path="/login" element={<p>aa</p>} />
         </Routes>
       </Router>
+>>>>>>> 81863d2addaeaa0b74c6e8857cad07b146fb312f
     </div>
   );
 }
