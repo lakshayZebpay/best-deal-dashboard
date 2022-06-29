@@ -10,23 +10,70 @@ import "./CryptoCoins.css";
 const CryptoCoins = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
-  const [activeKey, setActiveKey] = useState("BTC-USDT");
+  const [activeKey, setActiveKey] = useState("BTC");
 
-  const [allExchangeData, setAllExchangeData] = useState([
-    { id: "1coin", name: "Binance", price: "$21" },
-    { id: "2coin", name: "Kraken", price: "$10" },
-    { id: "3coin", name: "FTX", price: "$12" },
-    { id: "4coin", name: "CoinBase", price: "$15" },
-    { id: "5coin", name: "Gemini", price: "$20" },
-  ]);
+  const [allExchangeData, setAllExchangeData] = useState({
+    BTC: [
+      { id: "1coin", name: "Binance", price: "$21000" },
+      { id: "2coin", name: "Kraken", price: "$20000" },
+      { id: "3coin", name: "FTX", price: "$21222" },
+      { id: "4coin", name: "CoinBase", price: "$22222" },
+      { id: "5coin", name: "Gemini", price: "$20002" },
+    ],
+    ETH: [
+      { id: "1coin", name: "Binance", price: "$21" },
+      { id: "2coin", name: "Kraken", price: "$10" },
+      { id: "3coin", name: "FTX", price: "$12" },
+      { id: "4coin", name: "CoinBase", price: "$15" },
+      { id: "5coin", name: "Gemini", price: "$20" },
+    ],
+    XRP: [
+      { id: "1coin", name: "Binance", price: "$21" },
+      { id: "2coin", name: "Kraken", price: "$10" },
+      { id: "3coin", name: "FTX", price: "$12" },
+      { id: "4coin", name: "CoinBase", price: "$15" },
+      { id: "5coin", name: "Gemini", price: "$20" },
+    ],
+    BAT: [
+      { id: "1coin", name: "Binance", price: "$21" },
+      { id: "2coin", name: "Kraken", price: "$10" },
+      { id: "3coin", name: "FTX", price: "$12" },
+      { id: "4coin", name: "CoinBase", price: "$15" },
+      { id: "5coin", name: "Gemini", price: "$20" },
+    ],
+    ADA: [
+      { id: "1coin", name: "Binance", price: "$21" },
+      { id: "2coin", name: "Kraken", price: "$10" },
+      { id: "3coin", name: "FTX", price: "$12" },
+      { id: "4coin", name: "CoinBase", price: "$15" },
+      { id: "5coin", name: "Gemini", price: "$20" },
+    ],
+  });
 
   const navData = [
-    { id: "1exchange", name: "BTC-USDT", title: "Bitcoin" },
-    { id: "2exchange", name: "ETH-USDT", title: "Ethereum" },
-    { id: "3exchange", name: "XRP-USDT", title: "Ripple" },
-    { id: "4exchange", name: "BAT-USDT", title: "Basic Attention Token" },
-    { id: "5exchange", name: "ADA-USDT", title: "Cardano" },
+    { id: "1exchange", name: "BTC", title: "Bitcoin" },
+    { id: "2exchange", name: "ETH", title: "Ethereum" },
+    { id: "3exchange", name: "XRP", title: "Ripple" },
+    { id: "4exchange", name: "BAT", title: "Basic Attention Token" },
+    { id: "5exchange", name: "ADA", title: "Cardano" },
   ];
+
+  const getCryptoPng = (cryptoName) => {
+    switch (cryptoName) {
+      case "BTC":
+        return "/icons8-bitcoin-128.png";
+      case "ETH":
+        return "/icons8-ethereum-100.png";
+      case "BAT":
+        return "/icons8-basic-attention-token-64.png";
+      case "XRP":
+        return "/icons8-xrp-128.png";
+      case "ADA":
+        return "/icons8-cardano-50.png";
+      default:
+        return ".";
+    }
+  };
 
   useEffect(() => {
     //backend call here
@@ -45,7 +92,9 @@ const CryptoCoins = () => {
     return (
       <Tab.Pane key={data.id} eventKey={data.name}>
         <ExchangeData
-          allExchangeData={activeKey === data.name ? allExchangeData : []}
+          allExchangeData={
+            activeKey === data.name ? allExchangeData[data.name] : []
+          }
           cryptoId={data.name}
         />
       </Tab.Pane>
@@ -68,7 +117,15 @@ const CryptoCoins = () => {
                 navData.map((data) => {
                   return (
                     <Nav.Item key={data.id}>
-                      <Nav.Link eventKey={data.name}>{data.title}</Nav.Link>
+                      <Nav.Link eventKey={data.name}>
+                        <img
+                          src={process.env.PUBLIC_URL + getCryptoPng(data.name)}
+                          width="20px"
+                          height="20px"
+                          alt="cryptoCoin-logo"
+                        />
+                        {data.title}
+                      </Nav.Link>
                     </Nav.Item>
                   );
                 })}
