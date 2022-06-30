@@ -30,7 +30,7 @@ const CryptoBuying = (props) => {
     <div className="cryptoBuying">
       <div className="cryptoExchange">
         <div className="exchangeCoin">
-          <InputGroup hasValidation onChange={handleBtcToDollar} type="number">
+          <InputGroup hasValidation type="number">
             <InputGroup.Text id="inputGroup-sizing-default">
               {props.cryptoId}
             </InputGroup.Text>
@@ -40,6 +40,7 @@ const CryptoBuying = (props) => {
               aria-describedby="inputGroup-sizing-default"
               type="number"
               value={cryptoValue}
+              onChange={handleBtcToDollar}
             />
           </InputGroup>
         </div>
@@ -50,13 +51,14 @@ const CryptoBuying = (props) => {
           alt="conversion-logo"
         />
         <div className="exchangeCoin">
-          <InputGroup onChange={handleDollarToBtc}>
+          <InputGroup>
             <Form.Control
               placeholder="USDT"
               aria-label="Recipient's username"
               aria-describedby="basic-addon2"
               value={dollarValue}
               type="number"
+              onChange={handleDollarToBtc}
             />
             <InputGroup.Text id="basic-addon2">USDT</InputGroup.Text>
           </InputGroup>
