@@ -20,7 +20,7 @@ const Header = (props) => {
   return (
     <nav className="navbar navbar-dark" style={{ backgroundColor: "#e3f2fd" }}>
       <div className="navPosition">
-        <h4>{`Hi ${userData?.name || ""}`}</h4>
+        <h4>{`Hi ,${userData?.name || "Unknown"}`}</h4>
         <Stack className="buttonGroup" direction="horizontal" gap={2}>
           <Button
             as="a"
