@@ -7,6 +7,7 @@ import Transactions from "../Transactions/Transactions";
 import getData from "../../Calls/getData";
 
 const History = () => {
+  const [isLoading, setLoading] = useState(false);
   const [show, setShow] = useState(false);
   const [title, setTitle] = useState("All");
   const [cryptoTransactions, setCryptoTransaction] = useState([
@@ -90,8 +91,6 @@ const History = () => {
       progress: "Completed",
     },
   ]);
-  const [specificCryptoTransactions, setSpecifiedCryptoTransactions] =
-    useState(cryptoTransactions);
 
   const handleClose = () => setShow(false);
   const toggleShow = () => setShow((s) => !s);
@@ -101,14 +100,30 @@ const History = () => {
     }
   };
 
-  //this useEffect is for calling backend for our history data
-  useEffect(() => {
-    // const url = "http";
-    // const data = getData(url);
-    // setCryptoTransaction(data);
-  }, []);
+  async function getHistory(token) {
+    setLoading(true);
+    try {
+      const response = await fetch("http://localhost:1337/transactions", {
+        method: "GET",
+        headers: new Headers({
+          token: token,
+          "Content-Type": "application/x-www-form-urlencoded",
+        }),
+      });
+      const data = await response.json();
 
-  useEffect(() => {
+      if (data.transactionData) {
+        setCryptoTransaction(data.transactionData);
+      } else {
+        alert("No Transactions has been made yet");
+      }
+    } catch {
+      alert("Server not working");
+    }
+
+    setLoading(false);
+  }
+  const specificCryptoTransactions = () => {
     let data = [];
     if (title !== "All")
       data = cryptoTransactions.filter((transaction) => {
@@ -116,8 +131,13 @@ const History = () => {
       });
     else data = cryptoTransactions;
 
-    setSpecifiedCryptoTransactions(data);
-  }, [title]);
+    return data;
+  };
+
+  useEffect(() => {
+    const token = window.localStorage.getItem("token");
+    getHistory(token);
+  }, []);
 
   return (
     <>
@@ -140,7 +160,7 @@ const History = () => {
           </DropdownButton>
         </Offcanvas.Header>
         <Offcanvas.Body>
-          <Transactions cryptoTransactions={specificCryptoTransactions} />
+          <Transactions cryptoTransactions={specificCryptoTransactions()} />
         </Offcanvas.Body>
       </Offcanvas>
     </>
