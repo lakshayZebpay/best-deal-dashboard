@@ -4,11 +4,13 @@ import Form from "react-bootstrap/Form";
 import { useNavigate } from "react-router-dom";
 import "./login.css";
 import { Context } from "../App";
+import postData from "../Calls/postData";
 
 export const Login = () => {
   const getContext = useContext(Context);
   const { setIsLoggedIn } = getContext[0];
   const { setUserData } = getContext[1];
+
   const username = useRef(null);
   const password = useRef(null);
   const navigate = useNavigate();
@@ -21,7 +23,7 @@ export const Login = () => {
       password: password.current.value,
       username: username.current.value,
     };
-
+    setLoading(true);
     loginUser(data);
 
     password.current.value = "";
@@ -29,30 +31,26 @@ export const Login = () => {
   };
 
   async function loginUser(content) {
-    setLoading(true);
-    try {
-      const response = await fetch("http://localhost:1337/api/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(content),
+    postData("http://localhost:1337/api/login", content)
+      .then((data) => {
+        if (data.user) {
+          setUserData(data.userData);
+          alert("Login Successful");
+          window.localStorage.setItem("token", data.token);
+          window.localStorage.setItem("isLoggedIn", true);
+
+          navigate("/exchange");
+          setIsLoggedIn(data.user);
+        } else {
+          alert("Password is Wrong");
+        }
+      })
+      .catch((err) => {
+        alert("Server Error 500 " + err);
+      })
+      .finally(() => {
+        setLoading(false);
       });
-      const data = await response.json();
-      if (data.user) {
-        setUserData(data.userData);
-        alert("Login Successful");
-        window.localStorage.setItem("token", data.token);
-        window.localStorage.setItem("isLoggedIn", true);
-
-        navigate("/exchange");
-        setIsLoggedIn(true);
-      } else {
-        alert("Please check Id and password");
-      }
-    } catch {
-      alert("Username Doesn't Exist");
-    }
-
-    setLoading(false);
   }
 
   return (

@@ -1,11 +1,11 @@
-import { useContext } from "react";
+import React, { useContext } from "react";
 import { Button, Stack } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import History from "../CryptoCoins/History/History";
 import { Context } from "../App";
 import "./Header.css";
 
-const Header = (props) => {
+const Header = () => {
   const getContext = useContext(Context);
   const { isLoggedIn, setIsLoggedIn } = getContext[0];
   const { userData } = getContext[1];

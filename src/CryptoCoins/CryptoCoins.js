@@ -1,54 +1,15 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Col from "react-bootstrap/Col";
 import Nav from "react-bootstrap/Nav";
 import Row from "react-bootstrap/Row";
 import Tab from "react-bootstrap/Tab";
-import Loader from "../HOC/Loader/Loader";
 import ExchangeData from "./ExchangeData/ExchangeData";
 import "./CryptoCoins.css";
+import { QueryClientProvider, QueryClient } from "react-query";
 
+const queryClient = new QueryClient();
 const CryptoCoins = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [isError, setIsError] = useState(false);
   const [activeKey, setActiveKey] = useState("BTC");
-
-  const [allExchangeData, setAllExchangeData] = useState({
-    BTC: [
-      { id: "1coin", name: "Binance", price: "$21000" },
-      { id: "2coin", name: "Kraken", price: "$20000" },
-      { id: "3coin", name: "FTX", price: "$21222" },
-      { id: "4coin", name: "CoinBase", price: "$22222" },
-      { id: "5coin", name: "Gemini", price: "$20002" },
-    ],
-    ETH: [
-      { id: "1coin", name: "Binance", price: "$21" },
-      { id: "2coin", name: "Kraken", price: "$10" },
-      { id: "3coin", name: "FTX", price: "$12" },
-      { id: "4coin", name: "CoinBase", price: "$15" },
-      { id: "5coin", name: "Gemini", price: "$20" },
-    ],
-    XRP: [
-      { id: "1coin", name: "Binance", price: "$21" },
-      { id: "2coin", name: "Kraken", price: "$10" },
-      { id: "3coin", name: "FTX", price: "$12" },
-      { id: "4coin", name: "CoinBase", price: "$15" },
-      { id: "5coin", name: "Gemini", price: "$20" },
-    ],
-    BAT: [
-      { id: "1coin", name: "Binance", price: "$21" },
-      { id: "2coin", name: "Kraken", price: "$10" },
-      { id: "3coin", name: "FTX", price: "$12" },
-      { id: "4coin", name: "CoinBase", price: "$15" },
-      { id: "5coin", name: "Gemini", price: "$20" },
-    ],
-    ADA: [
-      { id: "1coin", name: "Binance", price: "$21" },
-      { id: "2coin", name: "Kraken", price: "$10" },
-      { id: "3coin", name: "FTX", price: "$12" },
-      { id: "4coin", name: "CoinBase", price: "$15" },
-      { id: "5coin", name: "Gemini", price: "$20" },
-    ],
-  });
 
   const navData = [
     { id: "1exchange", name: "BTC", title: "Bitcoin" },
@@ -75,28 +36,10 @@ const CryptoCoins = () => {
     }
   };
 
-  useEffect(() => {
-    //backend call here
-
-    //if call successful
-    // setIsLoading(false);
-    //if call has error , i.e. data not fetched
-    // setIsError(true);
-
-    console.log("backend request for " + activeKey);
-
-    //place the data in AllExchange data
-  }, [activeKey]);
-
   const exchanges = navData?.map((data) => {
     return (
       <Tab.Pane key={data.id} eventKey={data.name}>
-        <ExchangeData
-          allExchangeData={
-            activeKey === data.name ? allExchangeData[data.name] : []
-          }
-          cryptoId={data.name}
-        />
+        <ExchangeData cryptoId={data.name} />
       </Tab.Pane>
     );
   });
@@ -133,7 +76,9 @@ const CryptoCoins = () => {
           </Col>
           <Col sm={9}>
             <Tab.Content>
-              {isLoading ? <Loader isError={isError} /> : exchanges}
+              <QueryClientProvider client={queryClient}>
+                {exchanges}
+              </QueryClientProvider>
             </Tab.Content>
           </Col>
         </Row>

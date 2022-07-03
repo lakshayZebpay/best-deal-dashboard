@@ -1,6 +1,12 @@
+import { useEffect } from "react";
 import { Card } from "react-bootstrap";
 
 const Transactions = (props) => {
+  useEffect(() => {
+    const token = window.localStorage.getItem("token");
+    if (token) props.getHistory(token);
+  }, []);
+
   const data = props.cryptoTransactions?.map((transaction) => {
     const borderColor = () => {
       const progress = transaction.progress;
@@ -47,8 +53,8 @@ const Transactions = (props) => {
 
     return (
       <Card
+        key={transaction._id}
         border={borderColor()}
-        key={transaction.id}
         style={{
           marginBottom: "5px",
           borderWidth: "0px 0px 2px 2px",
