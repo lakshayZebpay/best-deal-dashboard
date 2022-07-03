@@ -1,96 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { Suspense, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Offcanvas from "react-bootstrap/Offcanvas";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
-import Transactions from "../Transactions/Transactions";
-import getData from "../../Calls/getData";
+import Loader from "../../HOC/Loader/Loader";
+import getDataWithToken from "../../Calls/getDataWithToken";
 
 const History = () => {
-  const [isLoading, setLoading] = useState(false);
+  const Transactions = React.lazy(() => import("../Transactions/Transactions"));
+
   const [show, setShow] = useState(false);
   const [title, setTitle] = useState("All");
-  const [cryptoTransactions, setCryptoTransaction] = useState([
-    {
-      id: 1,
-      exchangeName: "Binance",
-      coinName: "BTC",
-      coinAmount: "0.00001BTC",
-      time: "2 Days Ago",
-      cost: "300",
-      progress: "partiallyFilled",
-    },
-    {
-      id: 2,
-      exchangeName: "Binance",
-      coinName: "BTC",
-      coinAmount: "0.00001BTC",
-      time: "2 Days Ago",
-      cost: "300",
-      progress: "Completed",
-    },
-    {
-      id: 3,
-      exchangeName: "Binance",
-      coinName: "BTC",
-      coinAmount: "0.00001BTC",
-      time: "2 Days Ago",
-      cost: "300",
-    },
-    {
-      id: 4,
-      exchangeName: "Binance",
-      coinName: "BTC",
-      coinAmount: "0.00001BTC",
-      time: "2 Days Ago",
-      cost: "300",
-      progress: "Rejected",
-    },
-    {
-      id: 5,
-      exchangeName: "Binance",
-      coinName: "BTC",
-      coinAmount: "0.00001BTC",
-      time: "2 Days Ago",
-      cost: "300",
-      progress: "Pending",
-    },
-    {
-      id: 6,
-      exchangeName: "Binance",
-      coinName: "BTC",
-      coinAmount: "0.00001BTC",
-      time: "2 Days Ago",
-      cost: "300",
-      progress: "Rejected",
-    },
-    {
-      id: 7,
-      exchangeName: "Binance",
-      coinName: "BTC",
-      coinAmount: "0.00001BTC",
-      time: "2 Days Ago",
-      cost: "300",
-    },
-    {
-      id: 8,
-      exchangeName: "Binance",
-      coinName: "BTC",
-      coinAmount: "0.00001BTC",
-      time: "2 Days Ago",
-      cost: "300",
-      progress: "Pending",
-    },
-    {
-      id: 9,
-      exchangeName: "Binance",
-      coinName: "BTC",
-      coinAmount: "0.00001BTC",
-      time: "2 Days Ago",
-      cost: "300",
-      progress: "Completed",
-    },
-  ]);
+  const [cryptoTransactions, setCryptoTransaction] = useState([]);
 
   const handleClose = () => setShow(false);
   const toggleShow = () => setShow((s) => !s);
@@ -99,29 +20,24 @@ const History = () => {
       setTitle(event.target.id);
     }
   };
+  function getHistory(token) {
+    getDataWithToken("http://localhost:1337/transactions", token)
+      .then((data) => {
+        if (data.transactionData) {
+          const updatedData = data.transactionData.sort((b, a) => {
+            return (
+              new Date(a.dateTime).getTime() - new Date(b.dateTime).getTime()
+            );
+          });
 
-  async function getHistory(token) {
-    setLoading(true);
-    try {
-      const response = await fetch("http://localhost:1337/transactions", {
-        method: "GET",
-        headers: new Headers({
-          token: token,
-          "Content-Type": "application/x-www-form-urlencoded",
-        }),
+          setCryptoTransaction(updatedData);
+        } else {
+          console.log("No Transactions has been made yet");
+        }
+      })
+      .catch((err) => {
+        console.log("Server not working " + err);
       });
-      const data = await response.json();
-
-      if (data.transactionData) {
-        setCryptoTransaction(data.transactionData);
-      } else {
-        alert("No Transactions has been made yet");
-      }
-    } catch {
-      alert("Server not working");
-    }
-
-    setLoading(false);
   }
   const specificCryptoTransactions = () => {
     let data = [];
@@ -133,11 +49,6 @@ const History = () => {
 
     return data;
   };
-
-  useEffect(() => {
-    const token = window.localStorage.getItem("token");
-    getHistory(token);
-  }, []);
 
   return (
     <>
@@ -160,7 +71,12 @@ const History = () => {
           </DropdownButton>
         </Offcanvas.Header>
         <Offcanvas.Body>
-          <Transactions cryptoTransactions={specificCryptoTransactions()} />
+          <Suspense fallback={<Loader />}>
+            <Transactions
+              cryptoTransactions={specificCryptoTransactions()}
+              getHistory={getHistory}
+            />
+          </Suspense>
         </Offcanvas.Body>
       </Offcanvas>
     </>

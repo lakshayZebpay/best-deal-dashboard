@@ -1,13 +1,13 @@
 // import conversionLogo from "../../../public/";
 import "./CryptoBuying.css";
-import React, { useState, useRef, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import { Context } from "../../App";
 import InputGroup from "react-bootstrap/InputGroup";
 import { useNavigate } from "react-router-dom";
-import postData from "../../Calls/postData";
+import postDataWithToken from "../../Calls/postDataWithToken";
 
 const CryptoBuying = (props) => {
   const coinExchangeData = props.data;
@@ -15,11 +15,10 @@ const CryptoBuying = (props) => {
   const { isLoggedIn } = getContext[0];
   const [show, setShow] = useState(false);
   const navigate = useNavigate();
+  const cryptoPrice = coinExchangeData.price;
 
   const [cryptoValue, setCryptoValue] = useState("");
   const [dollarValue, setDollarValue] = useState("");
-  // const [coinValue, setCoinValue] = useState(coinExchangeData.price);
-  const [coinValue, setCoinValue] = useState(21);
 
   const handleSubmit = () => {
     const data = {
@@ -28,21 +27,21 @@ const CryptoBuying = (props) => {
       currency: "USDT",
       coinAmount: cryptoValue,
       cost: dollarValue,
-      oneTokenCost: coinExchangeData.price,
+      oneTokenCost: cryptoPrice,
       progress: "Completed",
     };
-
-    postData("http://localhost:1337/transactions", data);
+    const token = window.localStorage.getItem("token");
+    postDataWithToken("http://localhost:1337/transactions", data, token);
     handleClose();
   };
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const handleBtcToDollar = (e) => {
     setCryptoValue(e.target.value);
-    setDollarValue(e.target.value * coinValue);
+    setDollarValue(e.target.value * cryptoPrice);
   };
   const handleDollarToBtc = (e) => {
-    setCryptoValue(e.target.value / coinValue);
+    setCryptoValue(e.target.value / cryptoPrice);
     setDollarValue(e.target.value);
   };
 
