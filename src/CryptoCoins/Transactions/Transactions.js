@@ -23,14 +23,16 @@ const Transactions = (props) => {
 
     const transcationMessage = () => {
       const progress = transaction.progress;
+
+
       if (progress === "Completed") {
-        return `Bought ${transaction.tokenQuantity} for  ${transaction.cost} ${transaction.currency}`;
+        return `Bought ${(transaction.tokenQuantity)} ${transaction.token} for  ${transaction.cost} ${transaction.currency}`;
       } else if (progress === "Rejected") {
-        return `Transaction of ${transaction.tokenQuantity} for  ${transaction.cost} ${transaction.currency} has been Rejected`;
+        return `Transaction of ${transaction.tokenQuantity} ${transaction.token}  for  ${transaction.cost} ${transaction.currency} has been Rejected`;
       } else if (progress === "partiallyFilled") {
-        return `Transaction of ${transaction.tokenQuantity} for  ${transaction.cost} ${transaction.currency} has been Partially Filled`;
+        return `Transaction of ${transaction.tokenQuantity} ${transaction.token}  for  ${transaction.cost} ${transaction.currency} has been Partially Filled`;
       } else {
-        return `Transaction of ${transaction.tokenQuantity} for  ${transaction.cost} ${transaction.currency} is still pending`;
+        return `Transaction of ${transaction.tokenQuantity} ${transaction.token}  for  ${transaction.cost} ${transaction.currency} is still pending`;
       }
     };
 
