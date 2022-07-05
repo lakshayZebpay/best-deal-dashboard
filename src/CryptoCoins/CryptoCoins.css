@@ -7,3 +7,9 @@ img {
   margin-bottom: 4px;
   margin-right: 4px;
 }
+
+@media only screen and (max-width: 600px) {
+  .crypto-container {
+    width: 100%;
+  }
+}
