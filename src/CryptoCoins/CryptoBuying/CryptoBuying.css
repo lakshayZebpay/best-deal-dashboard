@@ -1,0 +1,25 @@
+#id1 {
+  color: rgb(227, 235, 239);
+  background-color: #008cba;
+  /* float : left ; */
+}
+.cryptoBuying {
+  display: inline-block;
+}
+.cryptoExchange {
+  display: inline-flex;
+  background-color: #eff2f5;
+  padding: 12px;
+  border-radius: 5px;
+  align-items: center;
+  margin: 5px;
+}
+.exchangeCoin {
+  margin: 0px 10px;
+}
+
+@media only screen and (max-width: 600px) {
+  .cryptoExchange {
+    display: flow-root;
+  }
+}

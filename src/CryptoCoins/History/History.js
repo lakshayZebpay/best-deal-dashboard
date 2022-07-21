@@ -1,95 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { Suspense, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Offcanvas from "react-bootstrap/Offcanvas";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
-import Transactions from "../Transactions/Transactions";
-import getData from "../../Calls/getData";
+import Loader from "../../HOC/Loader/Loader";
+import getDataWithToken from "../../Calls/getDataWithToken";
 
 const History = () => {
+  const Transactions = React.lazy(() => import("../Transactions/Transactions"));
+
   const [show, setShow] = useState(false);
-  const [title, setTitle] = useState("Pending");
-  const [cryptoTransactions, setCryptoTransaction] = useState([
-    {
-      id: 1,
-      exchangeName: "Binance",
-      coinName: "BTC",
-      coinAmount: "0.00001BTC",
-      time: "2 Days Ago",
-      cost: "300",
-      progress: "partiallyFilled",
-    },
-    {
-      id: 2,
-      exchangeName: "Binance",
-      coinName: "BTC",
-      coinAmount: "0.00001BTC",
-      time: "2 Days Ago",
-      cost: "300",
-      progress: "Completed",
-    },
-    {
-      id: 3,
-      exchangeName: "Binance",
-      coinName: "BTC",
-      coinAmount: "0.00001BTC",
-      time: "2 Days Ago",
-      cost: "300",
-    },
-    {
-      id: 4,
-      exchangeName: "Binance",
-      coinName: "BTC",
-      coinAmount: "0.00001BTC",
-      time: "2 Days Ago",
-      cost: "300",
-      progress: "Rejected",
-    },
-    {
-      id: 5,
-      exchangeName: "Binance",
-      coinName: "BTC",
-      coinAmount: "0.00001BTC",
-      time: "2 Days Ago",
-      cost: "300",
-      progress: "Pending",
-    },
-    {
-      id: 6,
-      exchangeName: "Binance",
-      coinName: "BTC",
-      coinAmount: "0.00001BTC",
-      time: "2 Days Ago",
-      cost: "300",
-      progress: "Rejected",
-    },
-    {
-      id: 7,
-      exchangeName: "Binance",
-      coinName: "BTC",
-      coinAmount: "0.00001BTC",
-      time: "2 Days Ago",
-      cost: "300",
-    },
-    {
-      id: 8,
-      exchangeName: "Binance",
-      coinName: "BTC",
-      coinAmount: "0.00001BTC",
-      time: "2 Days Ago",
-      cost: "300",
-      progress: "Pending",
-    },
-    {
-      id: 9,
-      exchangeName: "Binance",
-      coinName: "BTC",
-      coinAmount: "0.00001BTC",
-      time: "2 Days Ago",
-      cost: "300",
-      progress: "Completed",
-    },
-  ]);
+  const [title, setTitle] = useState("All");
+  const [cryptoTransactions, setCryptoTransaction] = useState([]);
 
   const handleClose = () => setShow(false);
   const toggleShow = () => setShow((s) => !s);
@@ -98,16 +20,36 @@ const History = () => {
       setTitle(event.target.id);
     }
   };
+  function getHistory(token) {
+    getDataWithToken("http://localhost:1337/transactions", token)
+      .then((data) => {
+        if (data.transactionData) {
+          const updatedData = data.transactionData.sort((b, a) => {
+            return (
+              new Date(a.dateTime).getTime() - new Date(b.dateTime).getTime()
+            );
+          });
 
-  //this useEffect is for calling backend for our history data
-  useEffect(() => {
-    // const url = "http";
-    // const data = getData(url);
-    // setCryptoTransaction(data);
-  }, []);
+          setCryptoTransaction(updatedData);
+        } else {
+          console.log("No Transactions has been made yet");
+        }
+      })
+      .catch((err) => {
+        console.log("Server not working " + err);
+      });
+  }
+  const specificCryptoTransactions = () => {
+    let data = [];
+    if (title !== "All")
+      data = cryptoTransactions.filter((transaction) => {
+        return transaction.progress === title;
+      });
+    else data = cryptoTransactions;
 
-  //just a filter
-  useEffect(() => {}, [title]);
+    return data;
+  };
+
   return (
     <>
       <Button variant="primary" onClick={toggleShow} className="me-2">
@@ -121,13 +63,20 @@ const History = () => {
             onClick={handleClick}
           >
             <Dropdown.Item id="Pending">Pending</Dropdown.Item>
-            <Dropdown.Item id="Complete">Complete</Dropdown.Item>
+            <Dropdown.Item id="Completed">Completed</Dropdown.Item>
+            <Dropdown.Item id="partiallyFilled">Partially Filled</Dropdown.Item>
             <Dropdown.Item id="Rejected">Rejected</Dropdown.Item>
+
             <Dropdown.Item id="All">All</Dropdown.Item>
           </DropdownButton>
         </Offcanvas.Header>
         <Offcanvas.Body>
-          <Transactions cryptoTransactions={cryptoTransactions} />
+          <Suspense fallback={<Loader />}>
+            <Transactions
+              cryptoTransactions={specificCryptoTransactions()}
+              getHistory={getHistory}
+            />
+          </Suspense>
         </Offcanvas.Body>
       </Offcanvas>
     </>

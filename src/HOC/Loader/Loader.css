@@ -1,3 +1,7 @@
+.loader {
+  margin-top: 4rem;
+  z-index: 2000;
+}
 .center {
   /* height: 100vh; */
   display: flex;

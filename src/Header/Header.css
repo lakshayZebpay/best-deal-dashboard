@@ -1,4 +1,15 @@
-.buttonGroup {
-  width: 90%;
-  justify-content: right;
+.navPosition {
+  margin: 0px 30px;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+@media only screen and (max-width: 600px) {
+  .navPosition {
+    display: inline-block;
+  }
+  .buttonGroup {
+    justify-content: center;
+  }
 }

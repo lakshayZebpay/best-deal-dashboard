@@ -1,7 +1,7 @@
 async function getData(url) {
   const response = await fetch(url);
 
-  return response.json();
+  return await response.json();
 }
 
 export default getData;
